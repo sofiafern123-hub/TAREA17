@@ -1,55 +1,37 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
-    text-align: center;
-    padding: 20px;
-}
+const apiKey = "COPIAR_TU_API_KEY"; // Reemplaza con tu clave real
+const apiURL = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
 
-h1 {
-    color: #2c3e50;
-}
+document.getElementById("convertir").addEventListener("click", async () => {
+    const montoUSD = document.getElementById("monto").value;
+    const divResultados = document.getElementById("resultados");
 
-.contenedor {
-    margin: 20px auto;
-    padding: 15px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    display: inline-block;
-}
+    if (!montoUSD || montoUSD <= 0) {
+        divResultados.innerHTML = "<p style='color:red;'>Ingrese un monto válido en USD.</p>";
+        return;
+    }
 
-label {
-    margin-right: 10px;
-    font-weight: bold;
-}
+    try {
+        const respuesta = await fetch(apiURL);
+        if (!respuesta.ok) throw new Error("Error al conectar con la API");
 
-input {
-    padding: 8px;
-    width: 150px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+        const datos = await respuesta.json();
+        const tasas = datos.conversion_rates;
 
-button {
-    padding: 8px 15px;
-    margin-left: 10px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        const guaranies = (montoUSD * tasas.PYG).toLocaleString();
+        const pesosArg = (montoUSD * tasas.ARS).toLocaleString();
+        const reales = (montoUSD * tasas.BRL).toLocaleString();
 
-button:hover {
-    background-color: #2980b9;
-}
-
-.resultados {
-    margin-top: 20px;
-    padding: 15px;
-    background: #ecf0f1;
-    border: 2px solid #3498db;
-    border-radius: 8px;
-    display: inline-block;
-    text-align: left;
-}
+        divResultados.innerHTML = `
+            <h3>Resultados:</h3>
+            <p><strong>${montoUSD} USD</strong> equivale a:</p>
+            <ul>
+                <li>🇵🇾 Guaraníes (PYG): <span style="color:green;">${guaranies}</span></li>
+                <li>🇦🇷 Pesos Argentinos (ARS): <span style="color:blue;">${pesosArg}</span></li>
+                <li>🇧🇷 Reales Brasileños (BRL): <span style="color:purple;">${reales}</span></li>
+            </ul>
+        `;
+    } catch (error) {
+        console.error(error);
+        divResultados.innerHTML = "<p style='color:red;'>No se pudieron cargar los datos.</p>";
+    }
+});
