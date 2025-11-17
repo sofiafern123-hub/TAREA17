@@ -1,5 +1,4 @@
-const apiKey = "https://v6.exchangerate-api.com/v6/1eb1f7a56c535d15672b03bf/latest/USD"; // Reemplaza con tu clave real
-const apiURL = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+const apiURL = "https://v6.exchangerate-api.com/v6/1eb1f7a56c535d15672b03bf/latest/USD";
 
 document.getElementById("convertir").addEventListener("click", async () => {
     const montoUSD = document.getElementById("monto").value;
