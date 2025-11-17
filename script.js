@@ -1,31 +1,55 @@
-const apiKey = 'COPIAR_SUS_KEY';
-const apiURL = ‘https://v6.exchangerate-api.com/v6/1eb1f7a56c535d15672b03bf/latest/USD’ ;
-
-async function obtenerTasas() {
-    const respuesta = await fetch(apiURL);
-    const datos = await respuesta.json();
-    return datos.conversion_rates;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    text-align: center;
+    padding: 20px;
 }
 
-document.getElementById('btnConvertir').addEventListener('click', async () => {
-    const montoUSD = parseFloat(document.getElementById('monto').value);
+h1 {
+    color: #2c3e50;
+}
 
-    if (isNaN(montoUSD) || montoUSD <= 0) {
-        document.getElementById('resultados').innerHTML = 
-            `<p style="color:red;">Ingrese un monto válido.</p>`;
-        return;
-    }
+.contenedor {
+    margin: 20px auto;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: inline-block;
+}
 
-    const tasas = await obtenerTasas();
+label {
+    margin-right: 10px;
+    font-weight: bold;
+}
 
-    const guaranies = montoUSD * tasas.PYG;
-    const argentinos = montoUSD * tasas.ARS;
-    const reales = montoUSD * tasas.BRL;
+input {
+    padding: 8px;
+    width: 150px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-    document.getElementById('resultados').innerHTML = `
-        <p><strong>Resultado:</strong></p>
-        <p>Guaraníes (PYG): <strong>${guaranies.toLocaleString()}</strong></p>
-        <p>Peso Argentino (ARS): <strong>${argentinos.toLocaleString()}</strong></p>
-        <p>Real Brasileño (BRL): <strong>${reales.toFixed(2)}</strong></p>
-    `;
-});
+button {
+    padding: 8px 15px;
+    margin-left: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.resultados {
+    margin-top: 20px;
+    padding: 15px;
+    background: #ecf0f1;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: left;
+}
